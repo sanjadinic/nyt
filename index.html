@@ -13,72 +13,82 @@
   <body>
     <h1>Search articles from New York Times</h1>
     <section id="search">
-   <div id="selector">
-             <form >    
+   <div id="root">
+    <App>
+        <selector>
+           <form >    
               <input id="month" type="number" min="1" max="12" value="1" placeholder="Enter month" required>    
               
               <input id="year" type="number" min="1851" max="2018" value="2018" placeholder="Enter year" required>    
               <button onclick="find()">Find</button>
-            </form>  
+            </form> 
+          </selector>
+                <Results/>
+                <SelectedArticleDetails/>
+            </App>
+             
         </div>
       </section>
-      <div id="root">
   <script type="text/babel">
 
-      class App extends React.Component {
-        
-        constructor(props){
-          super(props);
-          this.state = {'urls': []};
-          this.onSuccess = this.onSuccess.bind(this);
-        }
+     class App extends React.Component {
 
-        onSuccess(responseData) {
-          let urls = [];
-          for(var i = 0; i < 20; i++) {
-            const doc = responseData.response.docs[i];
-            urls.push(doc.web_url);
-          }
-          this.setState({'urls': urls});
-        }
+    componentDidMount(){
+        Poziv ka NYT API-ju
+    }
 
-        componentDidMount(){
-          $.ajax({
-              url: 'https://developer.nytimes.com/archive_api.json',
-              method: 'GET',
-              data: {
-                  'api-key': "9b98b8d3102b4c98b7c14e81de2e368e"
-              },
-              success: this.onSuccess
-          });
-        }
-
-        render(){
-          return <Urls urls={this.state.urls}/>;
-        }
-
-      }
-
-      function Urls(props){
+    render(){
         return (
-          <div> 
-            {
-              props.urls.map(
-                (url, index) => <Url key={index} url={url}/>
-              )
-            }
-          </div>
+            <div>
+                <Results urls="">
+                <ArticleDetails />
+            </div>
         );
-      }
 
-      function Url(props){
-        return <p><a href={props.url} target="_blank">{props.url}</a></p>;
-      }
+    }
+}
 
-      function find(){
-        const root = document.getElementById('root');
-        ReactDOM.render(<App />,  root);
-      }
+function ArticleDetails(props){
+    return (
+        <div>
+            ...
+        </div>
+    );
+}
+
+function Results(props){
+    return (
+        <div>
+            <ArticlePreview url={props.urls[0]}>
+            <ArticlePreview url={props.urls[1]}>
+            <ArticlePreview url={props.urls[2]}>
+            ...
+            <ArticlePreview url={props.urls[19]}>
+        </div>
+    );
+}
+
+class ArticlePreview extends React.Component {
+
+    componentDidMount(){
+        Poziv ka LinkPreview-u API-ju
+    }
+
+    render(){
+        return (
+            <div>  
+                <img src={props.img}/>
+                <h3>{props.title}</h3>
+                <p>{props.description}</p>
+            </div>
+        );
+    }
+}
+
+functon find(){
+    const root = document.getElementById('root');
+    ReactDOM.render(<App />, root)
+}
 
     </script>
     
