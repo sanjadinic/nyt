@@ -4,31 +4,83 @@
     <title>NYT search articles</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="viewport" content="width=device-width">
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
   </head>
   <body>
     <h1>Search articles from New York Times</h1>
-    <main>
+    <section id="search">
    <div id="selector">
-            <select id="year">
-                <option value="2018">2018</option>
-            </select>
-            <select id="month">
-                <option value="1">Jan</option>
-            </select>
-            <button onclick="find()">Find</button>
+             <form >    
+              <input id="month" type="number" min="1" max="12" value="1" placeholder="Enter month" required>    
+              
+              <input id="year" type="number" min="1851" max="2018" value="2018" placeholder="Enter year" required>    
+              <button onclick="find()">Find</button>
+            </form>  
         </div>
-        <div id="root">
-          </main>
+      </section>
+      <div id="root">
+  <script type="text/babel">
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      class App extends React.Component {
+        
+        constructor(props){
+          super(props);
+          this.state = {'urls': []};
+          this.onSuccess = this.onSuccess.bind(this);
+        }
+
+        onSuccess(responseData) {
+          let urls = [];
+          for(var i = 0; i < 20; i++) {
+            const doc = responseData.response.docs[i];
+            urls.push(doc.web_url);
+          }
+          this.setState({'urls': urls});
+        }
+
+        componentDidMount(){
+          $.ajax({
+              url: 'https://developer.nytimes.com/archive_api.json',
+              method: 'GET',
+              data: {
+                  'api-key': "9b98b8d3102b4c98b7c14e81de2e368e"
+              },
+              success: this.onSuccess
+          });
+        }
+
+        render(){
+          return <Urls urls={this.state.urls}/>;
+        }
+
+      }
+
+      function Urls(props){
+        return (
+          <div> 
+            {
+              props.urls.map(
+                (url, index) => <Url key={index} url={url}/>
+              )
+            }
+          </div>
+        );
+      }
+
+      function Url(props){
+        return <p><a href={props.url} target="_blank">{props.url}</a></p>;
+      }
+
+      function find(){
+        const root = document.getElementById('root');
+        ReactDOM.render(<App />,  root);
+      }
+
+    </script>
+    
   </body>
 </html>
