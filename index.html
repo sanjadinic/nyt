@@ -24,23 +24,48 @@
             </form> 
           </selector>
                 <Results/>
-                <SelectedArticleDetails/>
-            </App>
-             
+                <ArticleDetails/>
+    <App>
         </div>
       </section>
   <script type="text/babel">
 
      class App extends React.Component {
 
+        constructor(props){
+          super(props);
+          this.state = {'urls': []};
+          this.onSuccess = this.onSuccess.bind(this);
+        }
+
+        onSuccess(responseData) {
+          let urls = [];
+          for(var i = 0; i < 20; i++) {
+            const doc = responseData.response.docs[i];
+            urls.push(doc.web_url);
+          }
+          this.setState({'urls': urls});
+        }
+
     componentDidMount(){
-        Poziv ka NYT API-ju
+           $.ajax({
+              url: 'https://developer.nytimes.com/archive_api.json',
+              method: 'GET',
+              data: {
+                  'api-key': "581847de71484ddba4e5ae5eee1b92e4"
+                  q_year: document.getElementById('year').value,
+                  q_month: document.getElementById('month').value,
+                  format: "jsonp",
+                  callback: "jsonp_callback"
+              },
+              success: this.onSuccess
+          });
     }
 
     render(){
         return (
             <div>
-                <Results urls="">
+                <Results urls={this.state.urls}/>
                 <ArticleDetails />
             </div>
         );
@@ -51,7 +76,11 @@
 function ArticleDetails(props){
     return (
         <div>
-            ...
+            {
+              props.urls.map(
+                (url, index) => <Url key={index} url={url}/>
+              )
+            }
         </div>
     );
 }
@@ -59,19 +88,21 @@ function ArticleDetails(props){
 function Results(props){
     return (
         <div>
-            <ArticlePreview url={props.urls[0]}>
-            <ArticlePreview url={props.urls[1]}>
-            <ArticlePreview url={props.urls[2]}>
-            ...
-            <ArticlePreview url={props.urls[19]}>
+            <ArticlePreview href={props.url} target="_blank">{props.url}</ArticlePreview>
         </div>
-    );
+    )
 }
 
 class ArticlePreview extends React.Component {
-
-    componentDidMount(){
-        Poziv ka LinkPreview-u API-ju
+         componentDidMount(){
+           $.ajax({
+              url: 'https://www.linkpreview.net/',
+              method: 'GET',
+              data: {
+                  'api-key': "5a915cd51a38ad77da5d9698f24ff9055107e7a053d34"
+              },
+              success: this.onSuccess
+          });
     }
 
     render(){
@@ -85,7 +116,9 @@ class ArticlePreview extends React.Component {
     }
 }
 
-functon find(){
+function find(event){
+    var month = document.getElementById('month');
+    var year = document.getElementById('year')
     const root = document.getElementById('root');
     ReactDOM.render(<App />, root)
 }
