@@ -16,7 +16,7 @@
    <div id="root">
     <App>
         <selector>
-           <form >    
+           <form id="param">    
               <input id="month" type="number" min="1" max="12" value="1" placeholder="Enter month" required>    
               
               <input id="year" type="number" min="1851" max="2018" value="2018" placeholder="Enter year" required>    
@@ -25,7 +25,7 @@
           </selector>
                 <Results/>
                 <ArticleDetails/>
-    <App>
+    </App>
         </div>
       </section>
   <script type="text/babel">
@@ -34,7 +34,7 @@
 
         constructor(props){
           super(props);
-          this.state = {'urls': []};
+          this.state = {'urls': ['tetst.com']};
           this.onSuccess = this.onSuccess.bind(this);
         }
 
@@ -48,25 +48,26 @@
         }
 
     componentDidMount(){
+    var url = "https://api.nytimes.com/svc/archive/v1/2016/1.json";
+    url += '?' + $.param({
+    'api-key': "581847de71484ddba4e5ae5eee1b92e4"
+  });
            $.ajax({
-              url: 'https://developer.nytimes.com/archive_api.json',
+              url: url,
               method: 'GET',
-              data: {
-                  'api-key': "581847de71484ddba4e5ae5eee1b92e4"
-                  q_year: document.getElementById('year').value,
-                  q_month: document.getElementById('month').value,
-                  format: "jsonp",
-                  callback: "jsonp_callback"
-              },
-              success: this.onSuccess
-          });
+              
+          }).done(function(result){
+  console.log(result);
+}).fail(function(err) {
+  throw err;
+});
     }
 
     render(){
         return (
             <div>
                 <Results urls={this.state.urls}/>
-                <ArticleDetails />
+                {/*<ArticleDetails />*/}
             </div>
         );
 
@@ -88,29 +89,36 @@ function ArticleDetails(props){
 function Results(props){
     return (
         <div>
-            <ArticlePreview href={props.url} target="_blank">{props.url}</ArticlePreview>
+            <ArticlePreview webUrl={props.urls[0]} />
         </div>
     )
 }
 
 class ArticlePreview extends React.Component {
+/*
          componentDidMount(){
            $.ajax({
-              url: 'https://www.linkpreview.net/',
+              url: 'https://api.linkpreview.net',
               method: 'GET',
               data: {
-                  'api-key': "5a915cd51a38ad77da5d9698f24ff9055107e7a053d34"
+                  'key': "5a915cd51a38ad77da5d9698f24ff9055107e7a053d34",
+                  'q': this.props.webUrl
               },
               success: this.onSuccess
           });
     }
-
+*/
     render(){
-        return (
+
+      if(true) {
+        return <p>{this.props.webUrl}</p>;
+      }
+
+        return  (
             <div>  
-                <img src={props.img}/>
-                <h3>{props.title}</h3>
-                <p>{props.description}</p>
+                <img src={this.state.img}/>
+                <h3>{this.state.title}</h3>
+                <p>{this.state.description}</p>
             </div>
         );
     }
