@@ -34,7 +34,7 @@
 
         constructor(props){
           super(props);
-          this.state = {'urls': ['tetst.com']};
+          this.state = {'urls': []};
           this.onSuccess = this.onSuccess.bind(this);
         }
 
@@ -56,9 +56,8 @@
               url: url,
               method: 'GET',
               
-          }).done(function(result){
-  console.log(result);
-}).fail(function(err) {
+          }).done(this.onSuccess
+).fail(function(err) {
   throw err;
 });
     }
