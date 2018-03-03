@@ -49,9 +49,9 @@
 
 	render(){    
   		return (
-  			<div>
+  			<div className="master">
   				<Results docs={this.state.docs} selectionHandler={this.handleArticleClick}/>
-  				<ArticleDetails  article={this.state.selectedArticle}/>
+  				<ArticleDetails article={this.state.selectedArticle}/>
   			</div>
   		);
   	}
@@ -62,7 +62,7 @@
 
 function Results(props){  
 	return (
-		<div>		
+		<div >		
 			{
 				props.docs.map((doc) => <ArticlePreview selectionHandler={props.selectionHandler} key={doc.webUrl} className="article" webUrl={doc.webUrl} doc={doc} />)
 			} 		
@@ -119,7 +119,7 @@ class ArticlePreview extends React.Component {
     
     render(){
         return  (
-            <div onClick={() => this.props.selectionHandler(this.props.doc)}>  
+            <div className="article" onClick={() => this.props.selectionHandler(this.props.doc)}>  
                 <img src={this.state.data.img}/>
                 <h3>{this.state.data.title}</h3>
                 <p>{this.state.data.description}</p>
