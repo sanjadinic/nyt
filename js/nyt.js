@@ -28,14 +28,14 @@
 	}
 
   	componentDidMount(){  
-		var url = "https://api.nytimes.com/svc/archive/v1/2016/1.json";
-		url += '?' + $('#year').val()+ '?' + $('#month').val();
+		var url = "https://developer.nytimes.com/archive_api.json";
+		
 		  $.ajax({     
 			  url: url,       
 			  method: 'GET',       
 			  data: {           
-			  	'q_year': $('#year').val(),
-			  	'q_month': $('#month').val(),
+			  	'q_year': document.getElementById('year').value,
+			  	'q_month': document.getElementById('month').value,
 			  	'api-key': "581847de71484ddba4e5ae5eee1b92e4",     
 		   },        
 			success: this.onSuccess    
@@ -86,9 +86,10 @@ class ArticlePreview extends React.Component {
 		super(props)
 		this.state={
 			'data': {
-			  	'img': "",
-			  	'title':"",
-			  	'description': ""
+			  	
+			  	'description': "",
+			  	'image': "",
+			  	'title': "",
 
 			   }
 		}
@@ -120,9 +121,9 @@ class ArticlePreview extends React.Component {
     render(){
         return  (
             <div className="article" onClick={() => this.props.selectionHandler(this.props.doc)}>  
-                <img src={this.state.data.img}/>
-                <h3>{this.state.data.title}</h3>
                 <p>{this.state.data.description}</p>
+                <img src={this.state.data.image}/>
+                 <h3>{this.state.data.title}</h3>
             </div>
         );
     }
@@ -130,6 +131,7 @@ class ArticlePreview extends React.Component {
 
 function find(event){
     event.preventDefault();
+    let form = document.getElementById('param')
     const root = document.getElementById('root');
     ReactDOM.render(<App />, root)
 }
