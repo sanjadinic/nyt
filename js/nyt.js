@@ -49,7 +49,7 @@
 
 	render(){    
   		return (
-  			<div className="master">
+  			<div className="page">
   				<Results docs={this.state.docs} selectionHandler={this.handleArticleClick}/>
   				<ArticleDetails article={this.state.selectedArticle}/>
   			</div>
@@ -62,7 +62,7 @@
 
 function Results(props){  
 	return (
-		<div >		
+		<div className="master">		
 			{
 				props.docs.map((doc) => <ArticlePreview selectionHandler={props.selectionHandler} key={doc.webUrl} className="article" webUrl={doc.webUrl} doc={doc} />)
 			} 		
