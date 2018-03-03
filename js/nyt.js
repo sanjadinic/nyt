@@ -4,11 +4,13 @@
 	 constructor(props){    
 		  super(props);    
 		  this.state = {
-			  'docs': [],
+		  'docs': [] ,
 			  'selectedArticle':{
 			  	headline: {
 			  		main:""
-			  	}
+			  	},
+			  'pub_date':"",
+			  'snippet': "",
 			  }
 			};    
 		  this.onSuccess = this.onSuccess.bind(this); 
@@ -18,7 +20,7 @@
 
 	
 
-  	onSuccess(responseData) {    
+  	onSuccess(responseData) { 
   		let docs = [];    
   		for(var i = 0; i < 20; i++) {      
   			const doc = responseData.response.docs[i];      
@@ -28,7 +30,7 @@
 	}
 
   	componentDidMount(){  
-		var url = "https://developer.nytimes.com/archive_api.json";
+		var url = "https://api.nytimes.com/svc/archive/v1/2016/1.json";
 		
 		  $.ajax({     
 			  url: url,       
@@ -36,8 +38,8 @@
 			  data: {           
 			  	'q_year': document.getElementById('year').value,
 			  	'q_month': document.getElementById('month').value,
-			  	'api-key': "581847de71484ddba4e5ae5eee1b92e4",     
-		   },        
+			  	'api-key': "581847de71484ddba4e5ae5eee1b92e4",   
+		   },       
 			success: this.onSuccess    
 		 });  
 	}
@@ -49,7 +51,7 @@
 
 	render(){    
   		return (
-  			<div className="page">
+  			<div class="flex-container" id="page">
   				<Results docs={this.state.docs} selectionHandler={this.handleArticleClick}/>
   				<ArticleDetails article={this.state.selectedArticle}/>
   			</div>
@@ -62,11 +64,13 @@
 
 function Results(props){  
 	return (
-		<div className="master">		
+		
+		<div class="grid-container" id="master">		
 			{
 				props.docs.map((doc) => <ArticlePreview selectionHandler={props.selectionHandler} key={doc.webUrl} className="article" webUrl={doc.webUrl} doc={doc} />)
 			} 		
 		</div>
+		
 	);
 }
 
@@ -76,6 +80,8 @@ function ArticleDetails(props){
         <div className="details">
          	<p>Details of selected article</p>
          	<p>{props.article.headline.main}</p>
+         	<p>{props.article.pub_date}</p>
+         	<p>{props.article.snippet}</p>
         </div>
     );
 }
@@ -120,7 +126,7 @@ class ArticlePreview extends React.Component {
     
     render(){
         return  (
-            <div className="article" onClick={() => this.props.selectionHandler(this.props.doc)}>  
+            <div className="article" class="grid-item" onClick={() => this.props.selectionHandler(this.props.doc)}>  
                 <p>{this.state.data.description}</p>
                 <img src={this.state.data.image}/>
                  <h3>{this.state.data.title}</h3>
@@ -131,7 +137,9 @@ class ArticlePreview extends React.Component {
 
 function find(event){
     event.preventDefault();
-    let form = document.getElementById('param')
+    let form = document.getElementById('param');
+    var year= document.getElementById('year');
+    var month= document.getElementById('month');
     const root = document.getElementById('root');
     ReactDOM.render(<App />, root)
 }

@@ -8,43 +8,9 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <style type="text/css">
-    body {
-  background: #F3F3F3;
-  padding: 20px;
-  font-family: "Open Sans", sans-serif;
-}
+<style type="text/css" src="css/nyt.css">
+</style>
 
-
-.article {
-  background: #FFF;
-  margin: 0 0 20px;
-  padding: 20px;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(#000, 0.2);
-  cursor: pointer;
-  transition: 0.3s ease;
-
-  }
-.page {
-  display: flex;
-        }
-
-.master {
-  float: left;
-  width: 75%;
-
-  }
-
-.details {
-float: left;
-width: 25%;
- background-color: darkgrey;
-color: white;
- font-weight: bold;
-        }
-
-    </style>
 </head>
 <body>
 <h1>Search articles from New York Times</h1>
@@ -54,6 +20,7 @@ color: white;
     <input id="year" type="number" min="1851" max="2018" value="2018" placeholder="Enter year" required>    
     <button type="submit">Find</button>
   </form>
+  <br>
   <div id="root">
   </div>   
 </section>

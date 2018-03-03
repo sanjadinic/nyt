@@ -1,1 +1,43 @@
+    body {
+  background: #F3F3F3;
+  padding: 20px;
+  font-family: "Open Sans", sans-serif;
+}
+
+img {
+	display: flex;
+	width:100%;
+}
+.grid-item {
+  background: #FFF;
+   border: 1px solid black;
+  font-size: 10px;
+  text-align: center;
+
+  }
+ .grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  
+
+  }
+.flex-container {
+  display: flex;
+
+        }
+
+#master {
+  float: left;
+  width: 75%;
+
+  }
+
+.details {
+float: left;
+width: 25%;
+background-color: darkgrey;
+color: white;
+font-weight: bold;
+border: 2px solid red;
+        }
 
