@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>NYT</title>
+	<meta charset="utf-8">
+   <meta name="viewport" content="width=device-width">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+</head>
+<body>
+<h1>Search articles from New York Times</h1>
+<script type="text/javascript">
+
+		const url = new URL("https://api.nytimes.com/svc/archive/v1/2016/1.json");
+		url.searchParams.append('api-key',"581847de71484ddba4e5ae5eee1b92e4")
+		const request = new Request(
+      url,
+      {
+      	method: 'GET',
+      	mode: 'cors'
+      }
+    );
+
+    fetch(request)
+    .then(function(response) {
+        console.log(response);
+        return response.json()
+    })
+    .then(function(json){
+        console.log(json);
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+	
+	
+</script>
+</body>
+</html>
